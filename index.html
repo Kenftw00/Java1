@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Web Emulator</title>
+    <script src="https://cjrtnc.leaningtech.com/3_0/loader.js"></script>
+    <style>
+        body { font-family: monospace; background: black; color: lime; padding: 10px; }
+        #terminal { width: 100%; height: 300px; background: black; color: lime; border: none; }
+    </style>
+</head>
+<body>
+    <h2>Java Emulator in Browser</h2>
+    <textarea id="terminal" rows="10" placeholder="Type Java commands here..."></textarea>
+    <button onclick="runJava()">Run</button>
+    <pre id="output"></pre>
+
+    <script>
+        function runJava() {
+            let command = document.getElementById("terminal").value;
+            document.getElementById("output").innerText = "Running: " + command;
+            cheerpjInit();
+            cheerpjRunSnippet(command).then(output => {
+                document.getElementById("output").innerText = output;
+            }).catch(err => {
+                document.getElementById("output").innerText = "Error: " + err;
+            });
+        }
+    </script>
+</body>
+</html>
