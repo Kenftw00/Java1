@@ -23,6 +23,9 @@
             outline: none;
             resize: none;
         }
+        .cmd-output {
+            white-space: pre-wrap;
+        }
         .cmd-prompt::before {
             content: "C:\\Users\\User> ";
             color: lime;
@@ -35,7 +38,8 @@
         <textarea id="terminal" rows="10" placeholder="Type Java commands here..."></textarea>
     </div>
     <button onclick="runJava()">Run</button>
-    <pre id="output"></pre>
+    <button onclick="saveJavaFile()">Save as .java</button>
+    <pre id="output" class="cmd-output"></pre>
 
     <script>
         function runJava() {
@@ -47,6 +51,15 @@
             }).catch(err => {
                 document.getElementById("output").innerText += "Error: " + err;
             });
+        }
+        
+        function saveJavaFile() {
+            let code = document.getElementById("terminal").value;
+            let blob = new Blob([code], { type: "text/plain" });
+            let a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "Program.java";
+            a.click();
         }
     </script>
 </body>
