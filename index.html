@@ -24,9 +24,11 @@
             position: relative;
         }
         #output {
-            height: calc(100vh - 30px);
+            height: calc(100vh - 60px);
             overflow-y: auto;
             white-space: pre-wrap;
+            display: flex;
+            flex-direction: column;
         }
         #terminal {
             width: 100%; 
@@ -48,6 +50,14 @@
         .cmd-prefix {
             color: white;
         }
+        button {
+            background: gray;
+            color: white;
+            border: none;
+            padding: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -62,9 +72,15 @@
             <span class="cmd-prefix">C:\SYCM B 51></span>
             <input type="text" id="terminal" autofocus onkeypress="handleKeyPress(event)" />
         </div>
+        <button onclick="saveToGitHub()">Save to GitHub</button>
     </div>
     
     <script>
+        const GITHUB_USERNAME = "your-username";
+        const REPO_NAME = "your-repository";
+        const GITHUB_TOKEN = "your-personal-access-token"; 
+        const FILE_PATH = "cmd_output.txt";
+        
         function handleKeyPress(event) {
             if (event.key === 'Enter') {
                 event.preventDefault();
@@ -76,15 +92,41 @@
             let terminal = document.getElementById("terminal");
             let command = terminal.value;
             terminal.value = "";
-            document.getElementById("output").innerText += "C:\\SYCM B 51> " + command + "\n";
+            let output = document.getElementById("output");
+            output.innerHTML += "C:\\SYCM B 51> " + command + "<br>";
             
             if (command.startsWith("javac") || command.startsWith("java")) {
                 cheerpjInit();
-                cheerpjRunSnippet(command.replace("java ", "")).then(output => {
-                    document.getElementById("output").innerText += output + "\n";
+                cheerpjRunSnippet(command.replace("java ", "")).then(result => {
+                    output.innerHTML += result + "<br>";
                 }).catch(err => {
-                    document.getElementById("output").innerText += "Error: " + err + "\n";
+                    output.innerHTML += "Error: " + err + "<br>";
                 });
+            }
+        }
+        
+        async function saveToGitHub() {
+            let content = document.getElementById("output").innerText;
+            let encodedContent = btoa(unescape(encodeURIComponent(content)));
+            
+            let url = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${FILE_PATH}`;
+            
+            let response = await fetch(url, {
+                method: "PUT",
+                headers: {
+                    "Authorization": `token ${GITHUB_TOKEN}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    message: "Updated CMD output",
+                    content: encodedContent
+                })
+            });
+            
+            if (response.ok) {
+                alert("File saved to GitHub successfully!");
+            } else {
+                alert("Failed to save file. Check your credentials.");
             }
         }
     </script>
