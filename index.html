@@ -93,11 +93,20 @@
             let command = terminal.value;
             terminal.value = "";
             let output = document.getElementById("output");
-            output.innerHTML += "C:\\SYCM-B-51> " + command + "<br>";
+            output.innerHTML += "C:\\SYCM B 51> " + command + "<br>";
             
-            if (command.startsWith("javac") || command.startsWith("java")) {
+            if (command.startsWith("javac ")) {
+                let fileName = command.split(" ")[1];
                 cheerpjInit();
-                cheerpjRunSnippet(command.replace("java ", "")).then(result => {
+                cheerpjRunCommand(command).then(() => {
+                    output.innerHTML += "Compilation successful!<br>";
+                }).catch(err => {
+                    output.innerHTML += "Error: " + err + "<br>";
+                });
+            } else if (command.startsWith("java ")) {
+                let className = command.split(" ")[1];
+                cheerpjInit();
+                cheerpjRunMain(className).then(result => {
                     output.innerHTML += result + "<br>";
                 }).catch(err => {
                     output.innerHTML += "Error: " + err + "<br>";
