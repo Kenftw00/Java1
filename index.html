@@ -76,9 +76,9 @@
     </div>
     
     <script>
-        const GITHUB_USERNAME = "your-username";
-        const REPO_NAME = "your-repository";
-        const GITHUB_TOKEN = "your-personal-access-token"; 
+        const GITHUB_USERNAME = "Kenftw00";
+        const REPO_NAME = "Java1";
+        const GITHUB_TOKEN = "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"; 
         const FILE_PATH = "cmd_output.txt";
         
         function handleKeyPress(event) {
@@ -93,7 +93,7 @@
             let command = terminal.value;
             terminal.value = "";
             let output = document.getElementById("output");
-            output.innerHTML += "C:\\SYCM B 51> " + command + "<br>";
+            output.innerHTML += "C:\\SYCM-B-51> " + command + "<br>";
             
             if (command.startsWith("javac") || command.startsWith("java")) {
                 cheerpjInit();
