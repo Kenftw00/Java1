@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CMD Emulator with Java</title>
+    <title>Windows CMD Emulator with Java</title>
     <script src="https://cjrtnc.leaningtech.com/3_0/loader.js"></script>
     <style>
         body { 
@@ -18,14 +18,15 @@
             width: 100vw;
             height: 100vh;
             background: black;
-            border: 2px solid gray;
+            border: none;
             padding: 10px;
             overflow-y: auto;
             position: relative;
         }
         #output {
-            height: 90%;
+            height: calc(100vh - 30px);
             overflow-y: auto;
+            white-space: pre-wrap;
         }
         #terminal {
             width: 100%; 
@@ -35,21 +36,31 @@
             font-family: Consolas, monospace;
             outline: none;
             resize: none;
+            caret-color: white;
         }
-        .cmd-output {
-            white-space: pre-wrap;
+        .cmd-header {
+            color: gray;
+            margin-bottom: 10px;
         }
-        .cmd-prompt::before {
-            content: "C:\\Users\\User> ";
-            color: lime;
+        .cmd-prompt {
+            display: flex;
+        }
+        .cmd-prefix {
+            color: white;
         }
     </style>
 </head>
 <body>
     <div id="cmd-window">
+        <div class="cmd-header">
+            Microsoft Windows [Version 10.0.19045.4529]
+            <br>(c) Microsoft Corporation. All rights reserved.
+            <br>
+        </div>
         <pre id="output" class="cmd-output"></pre>
         <div class="cmd-prompt">
-            <textarea id="terminal" rows="1" placeholder="Type commands here..." onkeypress="handleKeyPress(event)"></textarea>
+            <span class="cmd-prefix">C:\SYCM B 51></span>
+            <input type="text" id="terminal" autofocus onkeypress="handleKeyPress(event)" />
         </div>
     </div>
     
@@ -65,7 +76,7 @@
             let terminal = document.getElementById("terminal");
             let command = terminal.value;
             terminal.value = "";
-            document.getElementById("output").innerText += "C:\\Users\\User> " + command + "\n";
+            document.getElementById("output").innerText += "C:\\SYCM B 51> " + command + "\n";
             
             if (command.startsWith("javac") || command.startsWith("java")) {
                 cheerpjInit();
